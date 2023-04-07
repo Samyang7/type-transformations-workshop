@@ -1,7 +1,11 @@
-import { Equal, Expect } from "../helpers/type-utils";
+import { Equal, Expect } from '../helpers/type-utils'
 
-type Fruit = "apple" | "banana" | "orange";
+type Fruit = 'apple' | 'banana' | 'orange'
 
-type AppleOrBanana = Fruit extends "apple" | "banana" ? Fruit : never;
+// distribute check
+// when conditional check act on generic, they become distribute
+type GetAppleOrBanana<T> = T extends 'apple' | 'banana' ? T : never
 
-type tests = [Expect<Equal<AppleOrBanana, "apple" | "banana">>];
+type AppleOrBanana = GetAppleOrBanana<Fruit>
+
+type tests = [Expect<Equal<AppleOrBanana, 'apple' | 'banana'>>]

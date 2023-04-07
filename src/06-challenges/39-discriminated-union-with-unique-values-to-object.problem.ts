@@ -1,32 +1,38 @@
-import { Equal, Expect } from "../helpers/type-utils";
+import { Equal, Expect } from '../helpers/type-utils'
 
 type Route =
   | {
-      route: "/";
+      route: '/'
       search: {
-        page: string;
-        perPage: string;
-      };
+        page: string
+        perPage: string
+      }
     }
-  | { route: "/about" }
-  | { route: "/admin" }
-  | { route: "/admin/users" };
+  | { route: '/about' }
+  | { route: '/admin' }
+  | { route: '/admin/users' }
 
-type RoutesObject = unknown;
+type check = Route['route']
+
+type RoutesObject = {
+  [R in Route as R['route']]: R extends { route: string; search: unknown }
+    ? R['search']
+    : never
+}
 
 type tests = [
   Expect<
     Equal<
       RoutesObject,
       {
-        "/": {
-          page: string;
-          perPage: string;
-        };
-        "/about": never;
-        "/admin": never;
-        "/admin/users": never;
+        '/': {
+          page: string
+          perPage: string
+        }
+        '/about': never
+        '/admin': never
+        '/admin/users': never
       }
     >
-  >,
-];
+  >
+]
